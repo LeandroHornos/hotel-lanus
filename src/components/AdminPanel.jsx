@@ -102,7 +102,7 @@ const RoomEditor = () => {
         <Form.Label>Camas</Form.Label>
         <div className="row">
           <div className="col-6">
-            <Form.Text>individuales</Form.Text>
+            <Form.Text>Individuales</Form.Text>
             <Form.Control
               type="number"
               value={singleBeds}
@@ -114,7 +114,7 @@ const RoomEditor = () => {
             />
           </div>
           <div className="col-6">
-            <Form.Text>matrimoniales</Form.Text>
+            <Form.Text>Matrimoniales</Form.Text>
             <Form.Control
               type="number"
               value={doubleBeds}
