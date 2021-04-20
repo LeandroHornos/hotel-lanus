@@ -107,7 +107,9 @@ const RoomEditor = () => {
               type="number"
               value={singleBeds}
               onChange={(e) => {
-                setSingleBeds(parseInt(e.target.value));
+                setSingleBeds(
+                  parseInt(e.target.value >= 0 ? e.target.value : 0)
+                );
               }}
             />
           </div>
@@ -117,7 +119,9 @@ const RoomEditor = () => {
               type="number"
               value={doubleBeds}
               onChange={(e) => {
-                setDoubleBeds(parseInt(e.target.value));
+                setDoubleBeds(
+                  parseInt(e.target.value >= 0 ? e.target.value : 0)
+                );
               }}
             />
           </div>
