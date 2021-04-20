@@ -29,7 +29,7 @@ const RoomEditor = () => {
   const [roomType, setRoomType] = useState("shared");
   const [singleBeds, setSingleBeds] = useState(0);
   const [doubleBeds, setDoubleBeds] = useState(0);
-  const [gender, setGender] = useState("");
+  const [gender, setGender] = useState("mixed");
   const [imgUrl, setImgUrl] = useState("");
 
   const handleRoomSubmit = () => {
@@ -55,6 +55,7 @@ const RoomEditor = () => {
           Dale un nombre a la habitación
         </Form.Text>
         <Form.Control
+          value={name}
           type="text"
           placeholder="Ej: Habitación Estándar"
           onChange={(e) => {
@@ -67,8 +68,11 @@ const RoomEditor = () => {
         <Form.Label>Tipo de habitación</Form.Label>
         <Form.Control
           as="select"
-          defaultValue={roomType}
+          value={roomType}
           onChange={(e) => {
+            if (e.target.value === "single") {
+              setGender("mixed");
+            }
             setRoomType(e.target.value);
           }}
         >
@@ -81,7 +85,9 @@ const RoomEditor = () => {
         <Form.Label>Género</Form.Label>
         <Form.Control
           as="select"
+          value={gender}
           disabled={roomType === "single"}
+          className={roomType === "single" && "text-muted"}
           onChange={(e) => {
             setGender(e.target.value);
           }}
@@ -99,6 +105,7 @@ const RoomEditor = () => {
             <Form.Text>individuales</Form.Text>
             <Form.Control
               type="number"
+              value={singleBeds}
               onChange={(e) => {
                 setSingleBeds(parseInt(e.target.value));
               }}
@@ -108,6 +115,7 @@ const RoomEditor = () => {
             <Form.Text>matrimoniales</Form.Text>
             <Form.Control
               type="number"
+              value={doubleBeds}
               onChange={(e) => {
                 setDoubleBeds(parseInt(e.target.value));
               }}
@@ -121,6 +129,7 @@ const RoomEditor = () => {
         <Form.Control
           type="text"
           as="textarea"
+          value={description}
           rows={4}
           placeholder="Describe la habitación"
           onChange={(e) => {
@@ -135,6 +144,7 @@ const RoomEditor = () => {
         </Form.Text>
         <Form.Control
           type="text"
+          value={imgUrl}
           placeholder="Ej /img/foto1.jpg"
           onChange={(e) => {
             setImgUrl(e.target.value);
