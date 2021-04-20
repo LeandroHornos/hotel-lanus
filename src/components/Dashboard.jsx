@@ -8,15 +8,16 @@ import Button from "react-bootstrap/Button";
 const Dashboard = () => {
   const history = useHistory();
   return (
-    <div>
+    <React.Fragment>
       <NavigationBar />
       <div className="row">
         <div className="col-md-3"></div>
         <div className="col-md-6">
-            <h1>Hotel Lanus</h1>
-            <h2>Tu hostel amigo</h2>
+          <h1 className="text-center">Hotel Lanus</h1>
+          <h2 className="text-center">Tu hostel amigo</h2>
           <div>
-          <Button
+            <Button
+              block
               onClick={() => {
                 history.push("./adminpanel");
               }}
@@ -24,6 +25,7 @@ const Dashboard = () => {
               Admin Panel
             </Button>
             <Button
+              block
               onClick={() => {
                 history.push("./rooms");
               }}
@@ -34,7 +36,7 @@ const Dashboard = () => {
         </div>
         <div className="col-md-3"></div>
       </div>
-    </div>
+    </React.Fragment>
   );
 };
 

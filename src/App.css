@@ -3,3 +3,32 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+h1 {
+  padding: 30px 10px;
+}
+
+h2 {
+  padding: 20px 10px;
+}
+
+h3 {
+  padding: 10px 10px;
+}
+
+.form {
+  padding: 40px 20px;
+}
+
+.form-label {
+  color: blue;
+}
+.min-100-vh {
+  min-height: 100vh;
+}
+
+.row {
+  width: 100%;
+  padding: 0;
+  box-sizing: border-box;
+}
