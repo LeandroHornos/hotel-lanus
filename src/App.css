@@ -16,6 +16,11 @@ h3 {
   padding: 10px 10px;
 }
 
+ul {
+  text-decoration: none;
+  list-style: none;
+}
+
 .form {
   padding: 40px 20px;
 }

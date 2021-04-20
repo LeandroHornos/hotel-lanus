@@ -1,4 +1,8 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
+
+// Firebase
+import firebaseApp from "../firebaseApp";
 
 // Components
 import NavigationBar from "./NavigationBar";
@@ -6,6 +10,7 @@ import NavigationBar from "./NavigationBar";
 // React Bootstrap Components
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import Alert from "react-bootstrap/Alert";
 
 const AdminPanel = () => {
   return (
@@ -24,15 +29,56 @@ const AdminPanel = () => {
 };
 
 const RoomEditor = () => {
+  const history = useHistory();
+  const db = firebaseApp.firestore();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [roomType, setRoomType] = useState("shared");
   const [singleBeds, setSingleBeds] = useState(0);
   const [doubleBeds, setDoubleBeds] = useState(0);
   const [gender, setGender] = useState("mixed");
-  const [imgUrl, setImgUrl] = useState("");
+  const [mainImgUrl, setMainImgUrl] = useState("");
+  const [newImgUrl, setNewImgUrl] = useState([]);
+  const [imgs, setImgs] = useState([]);
+  const [errorMsgs, setErrorMsgs] = useState([]);
 
-  const handleRoomSubmit = () => {
+  const validateFields = () => {
+    let dataIsValid = true;
+    let errors = [];
+    if (name === "") {
+      errors.push({
+        field: "name",
+        error: "Debes asignarle un nombre a la habitación",
+      });
+      dataIsValid = false;
+    }
+    if (description === "") {
+      errors.push({
+        field: "description",
+        error: "Debes dar una descripción de la habitación",
+      });
+      dataIsValid = false;
+    }
+    if (singleBeds === 0 && doubleBeds === 0) {
+      errors.push({
+        field: "beds",
+        error: "La habitación debe contar con al menos una cama",
+      });
+      dataIsValid = false;
+    }
+    if (mainImgUrl === "") {
+      errors.push({
+        field: "mainImgUrl",
+        error: "La habitación debe contar con una foto",
+      });
+      dataIsValid = false;
+    }
+    return { dataIsValid, errors };
+  };
+
+  const handleRoomSubmit = async () => {
+    const { dataIsValid, errors } = validateFields();
+
     const data = {
       name,
       description,
@@ -40,15 +86,34 @@ const RoomEditor = () => {
       singleBeds,
       doubleBeds,
       gender,
-      imgUrl,
+      mainImgUrl,
     };
     console.log(data);
-    return;
+    if (dataIsValid) {
+      try {
+        await db.collection("rooms").add(data);
+        console.log("se ha creado una habitacion", data);
+        history.push("./rooms");
+      } catch (error) {
+        console.log("Ha ocurrido un error al crear la habitacion", error);
+      }
+    } else {
+      console.log("Data contains errors");
+      setErrorMsgs(errors);
+      window.scrollTo(0, 0);
+      return;
+    }
   };
   return (
     <Form className="form">
       <h2 className="text-center">Nueva Habitación</h2>
-
+      {errorMsgs.map((msg) => {
+        return (
+          <Alert key={msg.field} variant="danger">
+            {msg.error}
+          </Alert>
+        );
+      })}
       <Form.Group>
         <Form.Label>Nombre</Form.Label>
         <Form.Text className="text-muted">
@@ -142,18 +207,48 @@ const RoomEditor = () => {
         />
       </Form.Group>
       <Form.Group>
-        <Form.Label>Imagen</Form.Label>
+        <Form.Label>Imagen Principal</Form.Label>
         <Form.Text className="text-muted">
-          Ingresa la url de la imagen
+          Esta es la imagen que se mostrará en la vista previa de la habitación
         </Form.Text>
         <Form.Control
           type="text"
-          value={imgUrl}
+          value={mainImgUrl}
           placeholder="Ej /img/foto1.jpg"
           onChange={(e) => {
-            setImgUrl(e.target.value);
+            setMainImgUrl(e.target.value);
           }}
         />
+      </Form.Group>
+
+      <Form.Group>
+        <Form.Label>Otras imágenes</Form.Label>
+        <ul>
+          {imgs.map((imgUrl) => {
+            return <li key={imgUrl}>{imgUrl}</li>;
+          })}
+        </ul>
+        <Form.Text className="text-muted">
+          Agrega imágenes adicionales para que los usuarios puedan ver mejor
+          cómo es la habitación (opcional)
+        </Form.Text>
+        <Form.Control
+          type="text"
+          value={newImgUrl}
+          placeholder="Ej /img/foto1.jpg"
+          onChange={(e) => {
+            setNewImgUrl(e.target.value);
+          }}
+        />
+
+        <Button
+          onClick={() => {
+            setImgs([...imgs, newImgUrl]);
+            setNewImgUrl("");
+          }}
+        >
+          Agregar
+        </Button>
       </Form.Group>
 
       <Button

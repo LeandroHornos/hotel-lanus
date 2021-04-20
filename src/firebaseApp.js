@@ -1,13 +1,15 @@
 import firebase from "firebase/app";
-// import "firebase/firestore";
+// import * as firebase from 'firebase/app';
+import "firebase/firestore";
+import "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: process.env.FB_API_KEY,
-  authDomain: process.env.FB_AUTH_DOMAIN,
-  projectId: process.env.FB_PROJECT_ID,
-  storageBucket: process.env.FB_STORAGE_BUCKET,
-  messagingSenderId: process.env.FB_MESSAGING_SENDER_ID,
-  appId: process.env.FB_APP_ID,
+  apiKey: "AIzaSyDKCeU2i15DsD9St75A_M1GHzxWUXMgseo",
+  authDomain: "hotel-lanus.firebaseapp.com",
+  projectId: "hotel-lanus",
+  storageBucket: "hotel-lanus.appspot.com",
+  messagingSenderId: "39633735270",
+  appId: "1:39633735270:web:136d1baef976af0d83a7a7"
 };
 // Initialize Firebase
 
