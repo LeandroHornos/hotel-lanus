@@ -30,7 +30,10 @@ const AdminPanel = () => {
 
 const RoomEditor = () => {
   const history = useHistory();
+  //Firebase
   const db = firebaseApp.firestore();
+  const storage = firebaseApp.storage();
+  // State
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [roomType, setRoomType] = useState("shared");
@@ -40,6 +43,8 @@ const RoomEditor = () => {
   const [mainImgUrl, setMainImgUrl] = useState("");
   const [newImgUrl, setNewImgUrl] = useState([]);
   const [imgs, setImgs] = useState([]);
+  const [imageAsFile, setImageAsFile] = useState("");
+  const [imageAsUrl, setImageAsUrl] = useState({ imgUrl: "" });
   const [errorMsgs, setErrorMsgs] = useState([]);
 
   const validateFields = () => {
@@ -66,13 +71,13 @@ const RoomEditor = () => {
       });
       dataIsValid = false;
     }
-    if (mainImgUrl === "") {
-      errors.push({
-        field: "mainImgUrl",
-        error: "La habitación debe contar con una foto",
-      });
-      dataIsValid = false;
-    }
+    // if (mainImgUrl === "") {
+    //   errors.push({
+    //     field: "mainImgUrl",
+    //     error: "La habitación debe contar con una foto",
+    //   });
+    //   dataIsValid = false;
+    // }
     return { dataIsValid, errors };
   };
 
@@ -88,11 +93,20 @@ const RoomEditor = () => {
       gender,
       mainImgUrl,
     };
+    const uploadTask = storage
+      .ref(`/images/${imageAsFile.name}`)
+      .put(imageAsFile);
     console.log(data);
     if (dataIsValid) {
       try {
         await db.collection("rooms").add(data);
         console.log("se ha creado una habitacion", data);
+        await storage.ref(`/images/${imageAsFile.name}`).put(imageAsFile);
+        const downloadUrl = await storage
+          .ref("images")
+          .child(imageAsFile.name)
+          .getDownloadURL();
+        console.log("download url:", downloadUrl);
         history.push("./rooms");
       } catch (error) {
         console.log("Ha ocurrido un error al crear la habitacion", error);
@@ -206,7 +220,7 @@ const RoomEditor = () => {
           }}
         />
       </Form.Group>
-      <Form.Group>
+      {/* <Form.Group>
         <Form.Label>Imagen Principal</Form.Label>
         <Form.Text className="text-muted">
           Esta es la imagen que se mostrará en la vista previa de la habitación
@@ -249,8 +263,17 @@ const RoomEditor = () => {
         >
           Agregar
         </Button>
+      </Form.Group> */}
+      <Form.Group>
+        <Form.Label>Foto de portada</Form.Label>
+        <Form.File
+          onChange={(e) => {
+            const imgFile = e.target.files[0];
+            console.log("cargando imagen", imgFile);
+            setImageAsFile(imgFile);
+          }}
+        />
       </Form.Group>
-
       <Button
         block
         variant="primary"
