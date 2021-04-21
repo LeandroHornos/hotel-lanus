@@ -40,11 +40,7 @@ const RoomEditor = () => {
   const [singleBeds, setSingleBeds] = useState(0);
   const [doubleBeds, setDoubleBeds] = useState(0);
   const [gender, setGender] = useState("mixed");
-  const [mainImgUrl, setMainImgUrl] = useState("");
-  const [newImgUrl, setNewImgUrl] = useState([]);
-  const [imgs, setImgs] = useState([]);
   const [imageAsFile, setImageAsFile] = useState("");
-  const [imageAsUrl, setImageAsUrl] = useState({ imgUrl: "" });
   const [errorMsgs, setErrorMsgs] = useState([]);
 
   const validateFields = () => {
@@ -81,32 +77,28 @@ const RoomEditor = () => {
     return { dataIsValid, errors };
   };
 
-  const handleRoomSubmit = async () => {
+  const handleSubmit = async () => {
     const { dataIsValid, errors } = validateFields();
 
-    const data = {
-      name,
-      description,
-      roomType,
-      singleBeds,
-      doubleBeds,
-      gender,
-      mainImgUrl,
-    };
-    const uploadTask = storage
-      .ref(`/images/${imageAsFile.name}`)
-      .put(imageAsFile);
-    console.log(data);
     if (dataIsValid) {
+      let data = {
+        name,
+        description,
+        roomType,
+        singleBeds,
+        doubleBeds,
+        gender,
+      };
       try {
-        await db.collection("rooms").add(data);
-        console.log("se ha creado una habitacion", data);
         await storage.ref(`/images/${imageAsFile.name}`).put(imageAsFile);
-        const downloadUrl = await storage
+        const imgUrl = await storage
           .ref("images")
           .child(imageAsFile.name)
           .getDownloadURL();
-        console.log("download url:", downloadUrl);
+        data = { ...data, imgUrl };
+        await db.collection("rooms").add(data);
+        console.log("se ha creado una habitacion", data);
+
         history.push("./rooms");
       } catch (error) {
         console.log("Ha ocurrido un error al crear la habitacion", error);
@@ -149,14 +141,14 @@ const RoomEditor = () => {
           as="select"
           value={roomType}
           onChange={(e) => {
-            if (e.target.value === "single") {
+            if (e.target.value === "private") {
               setGender("mixed");
             }
             setRoomType(e.target.value);
           }}
         >
           <option value="shared">Compartida</option>
-          <option value="single">Individual</option>
+          <option value="private">Privada</option>
         </Form.Control>
       </Form.Group>
 
@@ -165,8 +157,8 @@ const RoomEditor = () => {
         <Form.Control
           as="select"
           value={gender}
-          disabled={roomType === "single"}
-          className={roomType === "single" && "text-muted"}
+          disabled={roomType === "private"}
+          className={roomType === "private" && "text-muted"}
           onChange={(e) => {
             setGender(e.target.value);
           }}
@@ -220,50 +212,6 @@ const RoomEditor = () => {
           }}
         />
       </Form.Group>
-      {/* <Form.Group>
-        <Form.Label>Imagen Principal</Form.Label>
-        <Form.Text className="text-muted">
-          Esta es la imagen que se mostrará en la vista previa de la habitación
-        </Form.Text>
-        <Form.Control
-          type="text"
-          value={mainImgUrl}
-          placeholder="Ej /img/foto1.jpg"
-          onChange={(e) => {
-            setMainImgUrl(e.target.value);
-          }}
-        />
-      </Form.Group>
-
-      <Form.Group>
-        <Form.Label>Otras imágenes</Form.Label>
-        <ul>
-          {imgs.map((imgUrl) => {
-            return <li key={imgUrl}>{imgUrl}</li>;
-          })}
-        </ul>
-        <Form.Text className="text-muted">
-          Agrega imágenes adicionales para que los usuarios puedan ver mejor
-          cómo es la habitación (opcional)
-        </Form.Text>
-        <Form.Control
-          type="text"
-          value={newImgUrl}
-          placeholder="Ej /img/foto1.jpg"
-          onChange={(e) => {
-            setNewImgUrl(e.target.value);
-          }}
-        />
-
-        <Button
-          onClick={() => {
-            setImgs([...imgs, newImgUrl]);
-            setNewImgUrl("");
-          }}
-        >
-          Agregar
-        </Button>
-      </Form.Group> */}
       <Form.Group>
         <Form.Label>Foto de portada</Form.Label>
         <Form.File
@@ -280,7 +228,7 @@ const RoomEditor = () => {
         type="submit"
         onClick={(e) => {
           e.preventDefault();
-          handleRoomSubmit();
+          handleSubmit();
         }}
       >
         Guardar
