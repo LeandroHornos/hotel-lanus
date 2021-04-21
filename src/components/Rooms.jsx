@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import firebaseApp from "../firebaseApp";
 
 import Card from "react-bootstrap/Card";
+import Button from "react-bootstrap/Button";
 
 import NavigationBar from "./NavigationBar";
 
@@ -21,6 +22,10 @@ const Rooms = () => {
         return { ...doc.data(), id: doc.id };
       });
       console.log("Rooms:", rooms);
+      const triplets = groupAsTriplets(rooms);
+      console.log("grouped rooms:", triplets);
+      setGroupedRooms(triplets);
+      setLoading(false);
       return;
     };
 
@@ -31,8 +36,8 @@ const Rooms = () => {
     <React.Fragment>
       <NavigationBar />
       <div className="row">
-        <div className="col-md-3"></div>
-        <div className="col-md-6">
+        <div className="col-md-1"></div>
+        <div className="col-md-10">
           <h1 className="text-center">Habitaciones</h1>
           {loading ? (
             <p>Cargando...</p>
@@ -40,7 +45,7 @@ const Rooms = () => {
             <RoomsCardDeck groupedRooms={groupedRooms} />
           )}
         </div>
-        <div className="col-md-3"></div>
+        <div className="col-md-1"></div>
       </div>
     </React.Fragment>
   );
@@ -53,7 +58,18 @@ const RoomsCardDeck = (props) => {
         return (
           <div className="row">
             {group.map((room) => {
-              return <div className="col-md-4"></div>;
+              return (
+                <div className="col-md-4">
+                  <Card>
+                    <Card.Img variant="top" src={room.imgUrl} />
+                    <Card.Body>
+                      <Card.Title>{room.name}</Card.Title>
+                      <Card.Text>{room.description}</Card.Text>
+                      <Button variant="primary">Ver</Button>
+                    </Card.Body>
+                  </Card>
+                </div>
+              );
             })}
           </div>
         );
