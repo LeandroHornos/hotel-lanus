@@ -33,6 +33,7 @@ const RoomEditor = () => {
   //Firebase
   const db = firebaseApp.firestore();
   const storage = firebaseApp.storage();
+  const batch = db.batch();
   // State
   const [name, setName] = useState("");
   const [shortDescription, setShortDescription] = useState("");
@@ -77,11 +78,22 @@ const RoomEditor = () => {
     return { dataIsValid, errors };
   };
 
+  const createBedDocs = (singleBeds, doubleBeds, roomId) => {
+    let bedDocs = [];
+    for (let i = 0; i < singleBeds; i++) {
+      bedDocs.push({ roomId, type: "single", subType: "", customId: "" });
+    }
+    for (let i = 0; i < doubleBeds; i++) {
+      bedDocs.push({ roomId, type: "double", subType: "", customId: "" });
+    }
+    return bedDocs;
+  };
+
   const handleSubmit = async () => {
     const { dataIsValid, errors } = validateFields();
 
     if (dataIsValid) {
-      let data = {
+      let roomData = {
         name,
         shortDescription,
         longDescription: "",
@@ -101,7 +113,7 @@ const RoomEditor = () => {
           wifi: false,
           smoker: false,
           tv: false,
-        }
+        },
       };
       try {
         // Guardo la imagen principal
@@ -110,11 +122,18 @@ const RoomEditor = () => {
           .ref("images")
           .child(imageAsFile.name)
           .getDownloadURL();
-          // Guardo la habitación
-        data = { ...data, mainImgUrl };
-        await db.collection("rooms").add(data);
-        console.log("se ha creado una habitacion", data);
-
+        // Guardo la habitación
+        roomData = { ...roomData, mainImgUrl };
+        const room = await db.collection("rooms").add(roomData);
+        console.log("se ha creado una habitacion", room.id);
+        // Guardo las camas
+        const beds = createBedDocs(singleBeds, doubleBeds, room.id);
+        beds.forEach((bed) => {
+          const docRef = db.collection("beds").doc();
+          batch.set(docRef, bed);
+        });
+        await batch.commit();
+        console.log("Camas:", beds);
         history.push("./rooms");
       } catch (error) {
         console.log("Ha ocurrido un error al crear la habitacion", error);
