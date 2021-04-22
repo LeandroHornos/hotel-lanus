@@ -35,7 +35,7 @@ const RoomEditor = () => {
   const storage = firebaseApp.storage();
   // State
   const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
+  const [shortDescription, setShortDescription] = useState("");
   const [roomType, setRoomType] = useState("shared");
   const [singleBeds, setSingleBeds] = useState(0);
   const [doubleBeds, setDoubleBeds] = useState(0);
@@ -53,9 +53,9 @@ const RoomEditor = () => {
       });
       dataIsValid = false;
     }
-    if (description === "") {
+    if (shortDescription === "") {
       errors.push({
-        field: "description",
+        field: "shortDescription",
         error: "Debes dar una descripción de la habitación",
       });
       dataIsValid = false;
@@ -83,19 +83,35 @@ const RoomEditor = () => {
     if (dataIsValid) {
       let data = {
         name,
-        description,
+        shortDescription,
+        longDescription: "",
         roomType,
         singleBeds,
         doubleBeds,
         gender,
+        mainImgUrl: "",
+        imgUrls: [],
+        amenities: {
+          airConditioner: false,
+          privateBathroom: false,
+          breakfastIncluded: false,
+          lateCheckIn: false,
+          lateCheckOut: false,
+          sheetsIncluded: false,
+          wifi: false,
+          smoker: false,
+          tv: false,
+        }
       };
       try {
+        // Guardo la imagen principal
         await storage.ref(`/images/${imageAsFile.name}`).put(imageAsFile);
-        const imgUrl = await storage
+        const mainImgUrl = await storage
           .ref("images")
           .child(imageAsFile.name)
           .getDownloadURL();
-        data = { ...data, imgUrl };
+          // Guardo la habitación
+        data = { ...data, mainImgUrl };
         await db.collection("rooms").add(data);
         console.log("se ha creado una habitacion", data);
 
@@ -204,11 +220,11 @@ const RoomEditor = () => {
         <Form.Control
           type="text"
           as="textarea"
-          value={description}
+          value={shortDescription}
           rows={4}
           placeholder="Describe la habitación"
           onChange={(e) => {
-            setDescription(e.target.value);
+            setShortDescription(e.target.value);
           }}
         />
       </Form.Group>

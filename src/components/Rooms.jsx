@@ -61,10 +61,10 @@ const RoomsCardDeck = (props) => {
               return (
                 <div className="col-md-4">
                   <Card>
-                    <Card.Img variant="top" src={room.imgUrl} />
+                    <Card.Img variant="top" src={room.mainImgUrl} />
                     <Card.Body>
                       <Card.Title>{room.name}</Card.Title>
-                      <Card.Text>{room.description}</Card.Text>
+                      <Card.Text>{room.shortDescription}</Card.Text>
                       <Button variant="primary">Ver</Button>
                     </Card.Body>
                   </Card>
