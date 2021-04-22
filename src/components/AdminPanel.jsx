@@ -11,6 +11,7 @@ import NavigationBar from "./NavigationBar";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Alert from "react-bootstrap/Alert";
+import Spinner from "react-bootstrap/Spinner";
 
 const AdminPanel = () => {
   return (
@@ -43,6 +44,7 @@ const RoomEditor = () => {
   const [gender, setGender] = useState("mixed");
   const [imageAsFile, setImageAsFile] = useState("");
   const [errorMsgs, setErrorMsgs] = useState([]);
+  const [saving, setSaving] = useState(false);
 
   const validateFields = () => {
     let dataIsValid = true;
@@ -90,6 +92,7 @@ const RoomEditor = () => {
   };
 
   const handleSubmit = async () => {
+    setSaving(true);
     const { dataIsValid, errors } = validateFields();
 
     if (dataIsValid) {
@@ -136,6 +139,15 @@ const RoomEditor = () => {
         console.log("Camas:", beds);
         history.push("./rooms");
       } catch (error) {
+        setSaving(false);
+        setErrorMsgs([
+          ...errorMsgs,
+          {
+            field: "saving",
+            error:
+              "Ha ocurrido un error al intentar guardar la habitación, por favor vuelve a intentarlo",
+          },
+        ]);
         console.log("Ha ocurrido un error al crear la habitacion", error);
       }
     } else {
@@ -266,7 +278,17 @@ const RoomEditor = () => {
           handleSubmit();
         }}
       >
-        Guardar
+        {!saving ? (
+          "Guardar"
+        ) : (
+          <Spinner
+            as="span"
+            animation="border"
+            size="sm"
+            role="status"
+            aria-hidden="true"
+          />
+        )}
       </Button>
     </Form>
   );
