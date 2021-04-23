@@ -8,7 +8,6 @@ const NavigationBar = () => {
     <Navbar bg="primary" variant="dark">
       <Navbar.Brand href="#home">
         <img src="hotel-icon.png" height="18px" />
-        {" "}
         Hotel Lanus
       </Navbar.Brand>
       <Nav className="mr-auto">
