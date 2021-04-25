@@ -7,7 +7,7 @@ const NavigationBar = () => {
   return (
     <Navbar bg="primary" variant="dark">
       <Navbar.Brand href="#home">
-        <img src="hotel-icon.png" height="18px" />
+        <img src="hotel-icon.png" height="18px" alt="" />
         Hotel Lanus
       </Navbar.Brand>
       <Nav className="mr-auto">
@@ -15,6 +15,7 @@ const NavigationBar = () => {
         <Nav.Link href="/rooms">Rooms</Nav.Link>
         <Nav.Link href="/adminpanel">Admin</Nav.Link>
         <Nav.Link href="/reserve">Reserve</Nav.Link>
+        <Nav.Link href="/reservationquery">Disponibilidad</Nav.Link>
       </Nav>
     </Navbar>
   );

@@ -32,6 +32,7 @@ const Rooms = () => {
     };
 
     fetchData();
+    // eslint-disable-next-line
   }, []);
 
   return (

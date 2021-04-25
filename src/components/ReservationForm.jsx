@@ -72,7 +72,9 @@ const ReservationForm = () => {
         );
       }
     };
+
     fetchData();
+    // eslint-disable-next-line
   }, []);
   return (
     <React.Fragment>
@@ -117,15 +119,13 @@ const ReservationForm = () => {
                 >
                   <option value="">Selecciona la cama</option>
                   {beds.map((bed) => {
-                    if (selectedRoom === bed.roomId) {
-                      return (
+                    return (
+                      selectedRoom === bed.roomId && (
                         <option key={bed.id} value={bed.id}>
                           {bed.type}
                         </option>
-                      );
-                    } else {
-                      return;
-                    }
+                      )
+                    );
                   })}
                 </Form.Control>
               </Form.Group>
