@@ -2,30 +2,51 @@ import React, { useState, useEffect } from "react";
 
 //Firebase
 import firebaseApp from "../firebaseApp";
-
+// Router
+import { useHistory } from "react-router-dom";
 //React Bootstrap
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 //Components
 import NavigationBar from "./NavigationBar";
 
-const ReservationEditor = () => {
+const ReservationForm = () => {
   //Firebase
   const db = firebaseApp.firestore();
+  // Router
+  const history = useHistory();
   // State
   const [rooms, setRooms] = useState([]);
   const [beds, setBeds] = useState([]);
   const [dateIn, setDateIn] = useState("");
   const [dateOut, setDateOut] = useState("");
-  const [selectedRoom, setSelectedRoom] = useState(
-    rooms.length > 0 ? rooms[0].id : ""
-  );
-  const [selectedBed, setSelectedBed] = useState({});
+  const [selectedRoom, setSelectedRoom] = useState("");
+  const [selectedBed, setSelectedBed] = useState("");
   const [loading, setLoading] = useState(true);
 
   const dateToTimestamp = (date) => {
     let myDate = new Date(date);
     return myDate.getTime();
+  };
+
+  const handleSubmit = async () => {
+    let reservation = {
+      room: selectedRoom,
+      bed: selectedBed,
+      dateIn,
+      dateOut,
+      userId: "",
+      payed: false,
+      paymentId: "",
+      reservationDate: new Date(),
+    };
+    try {
+      await db.collection("reservations").add(reservation);
+      console.log("Se ha creado una reserva", reservation);
+      history.push("/");
+    } catch (error) {
+      console.log("Ha ocurrido un error al guardar la reserva", error);
+    }
   };
 
   useEffect(() => {
@@ -74,6 +95,7 @@ const ReservationEditor = () => {
                     setSelectedRoom(e.target.value);
                   }}
                 >
+                  <option value="">Selecciona una habitación</option>
                   {rooms.map((room) => {
                     return (
                       <option key={room.id} value={room.id}>
@@ -90,8 +112,10 @@ const ReservationEditor = () => {
                   as="select"
                   onChange={(e) => {
                     setSelectedBed(e.target.value);
+                    console.log("cama seleccionada", e.target.value);
                   }}
                 >
+                  <option value="">Selecciona la cama</option>
                   {beds.map((bed) => {
                     if (selectedRoom === bed.roomId) {
                       return (
@@ -139,10 +163,10 @@ const ReservationEditor = () => {
               </Form.Group>
               <Button
                 block
-                as="submit"
                 onClick={(e) => {
                   e.preventDefault();
                   console.log("reservando...");
+                  handleSubmit();
                 }}
               >
                 Reservar
@@ -156,4 +180,4 @@ const ReservationEditor = () => {
   );
 };
 
-export default ReservationEditor;
+export default ReservationForm;

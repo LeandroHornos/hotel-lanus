@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import AdminPanel from "./components/AdminPanel";
 import Dashboard from "./components/Dashboard";
 import Rooms from "./components/Rooms";
-import ReservationEditor from "./components/ReservationEditor"
+import ReservationForm from "./components/ReservationForm"
 
 function App() {
   return (
@@ -22,7 +22,7 @@ function App() {
           <AdminPanel />
         </Route>
         <Route exact path="/reserve">
-          <ReservationEditor />
+          <ReservationForm />
         </Route>
       </Switch>
     </Router>

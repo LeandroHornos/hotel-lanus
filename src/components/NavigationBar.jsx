@@ -14,6 +14,7 @@ const NavigationBar = () => {
         <Nav.Link href="/">Home</Nav.Link>
         <Nav.Link href="/rooms">Rooms</Nav.Link>
         <Nav.Link href="/adminpanel">Admin</Nav.Link>
+        <Nav.Link href="/reserve">Reserve</Nav.Link>
       </Nav>
     </Navbar>
   );
