@@ -12,8 +12,9 @@ import Card from "react-bootstrap/Card";
 import NavigationBar from "./NavigationBar";
 
 const ReservationQueryResults = (props) => {
+  //Firebase
   const db = firebaseApp.firestore();
-
+  // State
   const [beds, setBeds] = useState([]);
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -57,11 +58,9 @@ const ReservationQueryResults = (props) => {
         availableBeds = availableBeds.docs.map((doc) => {
           return { ...doc.data(), id: doc.id };
         });
-        console.log("Camas disponibles", availableBeds);
         const availableRoomsIds = availableBeds.map((bed) => {
           return bed.roomId;
         });
-        console.log("camas disponibles", availableBeds);
 
         // Obtengo las habitaciones de las camas disponibles
         let availableRooms = await db
@@ -75,7 +74,6 @@ const ReservationQueryResults = (props) => {
         availableRooms = availableRooms.docs.map((doc) => {
           return { ...doc.data(), id: doc.id };
         });
-        console.log("Habitaciones disponibles", availableRooms);
 
         // Cargo los resultados en el state:
         setBeds(availableBeds);
@@ -138,7 +136,7 @@ const ResultsViewer = (props) => {
       });
       updatedRooms.push({ ...room, availableBeds: groupBedsByType(roomBeds) });
     });
-    console.log("se han agrupado las camas en casa habitacion", updatedRooms);
+    console.log("se han agrupado las camas en cada habitacion", updatedRooms);
     return updatedRooms;
   };
   return (
@@ -147,26 +145,46 @@ const ResultsViewer = (props) => {
         return (
           <Card className="room-query-card">
             <Card.Header>
-              <Card.Title>{room.name}</Card.Title>
+              <Card.Title className="room-query-card-title">
+                {room.name}
+              </Card.Title>
             </Card.Header>
             <Card.Body>
-              <Card.Text>{room.shortDescription}</Card.Text>
-              <Card.Text>Camas disponibles: </Card.Text>
               <Card.Text>
-                {
-                  <ul>
-                    {room.availableBeds.map((group) => {
-                      return (
-                        <li key={group.type}>
-                          {group.type}
-                          {": "}
-                          {group.beds.length}
-                        </li>
-                      );
-                    })}
-                  </ul>
-                }
+                {" "}
+                <span className="room-query-item-title">Descripción: </span>
+                {room.shortDescription}
               </Card.Text>
+              <Card.Text>
+                <span className="room-query-item-title">Tipo: </span>
+                {room.roomType}
+              </Card.Text>
+              <Card.Text>
+                <span className="room-query-item-title"> Género: </span>
+                {room.gender}
+              </Card.Text>
+              <Card.Text>
+                <span className="room-query-item-title">
+                  Camas disponibles:
+                </span>
+              </Card.Text>
+              {
+                <ul className="list-group list-group-horizontal">
+                  {room.availableBeds.map((group) => {
+                    return (
+                      <li
+                        key={group.type}
+                        className="list-group-item no-border"
+                      >
+                        {group.type}
+                        {": "}
+                        {group.beds.length}
+                      </li>
+                    );
+                  })}
+                </ul>
+              }
+
               <Button variant="primary">Reservar</Button>
             </Card.Body>
           </Card>
