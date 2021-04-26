@@ -41,14 +41,19 @@ const ReservationQueryResults = (props) => {
         console.log("camas reservadas", reservedBeds);
 
         // Obtengo las camas disponibles
-        let availableBeds = await db
-          .collection("beds")
-          .where(
-            firebase.firestore.FieldPath.documentId(),
-            "not-in",
-            reservedBeds
-          )
-          .get();
+        let availableBeds;
+        if (reservedBeds.length === 0) {
+          availableBeds = await db.collection("beds").get();
+        } else {
+          availableBeds = await db
+            .collection("beds")
+            .where(
+              firebase.firestore.FieldPath.documentId(),
+              "not-in",
+              reservedBeds
+            )
+            .get();
+        }
         availableBeds = availableBeds.docs.map((doc) => {
           return { ...doc.data(), id: doc.id };
         });
