@@ -29,6 +29,16 @@ const ReservationForm = () => {
     return myDate.getTime();
   };
 
+  function compare(a, b) {
+    if (a.customId < b.customId) {
+      return -1;
+    }
+    if (a.customId > b.customId) {
+      return 1;
+    }
+    return 0;
+  }
+
   const handleSubmit = async () => {
     let reservation = {
       room: selectedRoom,
@@ -118,11 +128,11 @@ const ReservationForm = () => {
                   }}
                 >
                   <option value="">Selecciona la cama</option>
-                  {beds.map((bed) => {
+                  {beds.sort(compare).map((bed) => {
                     return (
                       selectedRoom === bed.roomId && (
                         <option key={bed.id} value={bed.id}>
-                          {bed.type}
+                          {`ID: ${bed.customId} | Tipo: ${bed.type}`}
                         </option>
                       )
                     );
