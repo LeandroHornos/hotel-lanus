@@ -28,6 +28,10 @@ ul {
 .form-label {
   color: blue;
 }
+
+.form-text {
+  padding: 10px 0px;
+}
 .min-100-vh {
   min-height: 100vh;
 }
