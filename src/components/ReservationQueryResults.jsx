@@ -36,28 +36,25 @@ const ReservationQueryResults = (props) => {
         console.log("reservas en esas fechas", reservations);
 
         // Obtengo las camas correspondientes a las reservas
-        const reservedBeds = reservations.map((res) => {
-          return res.bed;
+        let reservedBeds = [];
+        reservations.forEach((res) => {
+          reservedBeds = [...reservedBeds, ...res.beds];
         });
+
         console.log("camas reservadas", reservedBeds);
 
         // Obtengo las camas disponibles
-        let availableBeds;
-        if (reservedBeds.length === 0) {
-          availableBeds = await db.collection("beds").get();
-        } else {
-          availableBeds = await db
-            .collection("beds")
-            .where(
-              firebase.firestore.FieldPath.documentId(),
-              "not-in",
-              reservedBeds
-            )
-            .get();
-        }
-        availableBeds = availableBeds.docs.map((doc) => {
+        let allBeds = await db.collection("beds").get();
+        allBeds = allBeds.docs.map((doc) => {
           return { ...doc.data(), id: doc.id };
         });
+        let availableBeds; //todos las beds de allBeds que NO estan en reservedBeds
+        availableBeds = allBeds.filter((bed) => {
+          return !reservedBeds.some((id) => {
+            return id === bed.id;
+          });
+        });
+        // Ids de las habitaciones con camas disponibles:
         const availableRoomsIds = availableBeds.map((bed) => {
           return bed.roomId;
         });
