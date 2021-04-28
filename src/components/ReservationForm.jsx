@@ -21,7 +21,7 @@ const ReservationForm = () => {
   const [dateIn, setDateIn] = useState("");
   const [dateOut, setDateOut] = useState("");
   const [selectedRoom, setSelectedRoom] = useState("");
-  const [selectedBed, setSelectedBed] = useState("");
+  const [selectedBeds, setSelectedBeds] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const dateToTimestamp = (date) => {
@@ -42,7 +42,7 @@ const ReservationForm = () => {
   const handleSubmit = async () => {
     let reservation = {
       room: selectedRoom,
-      bed: selectedBed,
+      beds: selectedBeds,
       dateIn,
       dateOut,
       userId: "",
@@ -105,6 +105,7 @@ const ReservationForm = () => {
                   as="select"
                   onChange={(e) => {
                     setSelectedRoom(e.target.value);
+                    setSelectedBeds([]);
                   }}
                 >
                   <option value="">Selecciona una habitación</option>
@@ -118,26 +119,39 @@ const ReservationForm = () => {
                 </Form.Control>
               </Form.Group>
               <Form.Group>
-                <Form.Label>Cama</Form.Label>
-                <Form.Control
-                  value={selectedBed}
-                  as="select"
-                  onChange={(e) => {
-                    setSelectedBed(e.target.value);
-                    console.log("cama seleccionada", e.target.value);
-                  }}
-                >
-                  <option value="">Selecciona la cama</option>
+                <Form.Label>Camas</Form.Label>
+                <div>
                   {beds.sort(compare).map((bed) => {
                     return (
                       selectedRoom === bed.roomId && (
-                        <option key={bed.id} value={bed.id}>
-                          {`ID: ${bed.customId} | Tipo: ${bed.type}`}
-                        </option>
+                        // <option key={bed.id} value={bed.id}>
+                        //   {`ID: ${bed.customId} | Tipo: ${bed.type}`}
+                        // </option>
+                        <Form.Check
+                          type="checkbox"
+                          id=""
+                          key={bed.id}
+                          value={bed.id}
+                          label={`ID: ${bed.customId} | Tipo: ${bed.type}`}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setSelectedBeds([
+                                ...selectedBeds,
+                                e.target.value,
+                              ]);
+                            } else {
+                              setSelectedBeds(
+                                selectedBeds.filter((bed) => {
+                                  return bed !== e.target.value;
+                                })
+                              );
+                            }
+                          }}
+                        />
                       )
                     );
                   })}
-                </Form.Control>
+                </div>
               </Form.Group>
               <Form.Group>
                 <Form.Label>Fecha de entrada:</Form.Label>
