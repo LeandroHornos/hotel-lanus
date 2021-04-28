@@ -43,18 +43,19 @@ const ReservationQueryResults = (props) => {
 
         console.log("camas reservadas", reservedBeds);
 
-        // Obtengo las camas disponibles
+        // Obtengo las camas
         let allBeds = await db.collection("beds").get();
         allBeds = allBeds.docs.map((doc) => {
           return { ...doc.data(), id: doc.id };
         });
-        let availableBeds; //todos las beds de allBeds que NO estan en reservedBeds
+        // Filtro las camas que no tienen reserva entre esas fechas
+        let availableBeds;
         availableBeds = allBeds.filter((bed) => {
           return !reservedBeds.some((id) => {
             return id === bed.id;
           });
         });
-        // Ids de las habitaciones con camas disponibles:
+        // Obtengo las Ids de las habitaciones con camas disponibles:
         const availableRoomsIds = availableBeds.map((bed) => {
           return bed.roomId;
         });
