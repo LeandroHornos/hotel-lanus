@@ -24,7 +24,17 @@ const ReservationQueryResults = (props) => {
       const { dateIn, dateOut } = props.currentQuery;
       console.log("obteniendo resultados entre fechas", dateIn, dateOut);
       try {
-        // Obtengo las reservas existentes dentro de la fecha buscada
+        // Obtengo TODAS las camas
+        let allBeds = await db.collection("beds").get();
+        allBeds = allBeds.docs.map((doc) => {
+          return { ...doc.data(), id: doc.id };
+        });
+        // Obtengo TODAS las habitaciones
+        let allRooms = await db.collection("rooms").get();
+        allRooms = allRooms.docs.map((doc) => {
+          return { ...doc.data(), id: doc.id };
+        });
+        // Obtengo las reservas existentes dentro de las fechas buscadas
         let reservations = await db
           .collection("reservations")
           .where("dateIn", ">=", dateIn)
@@ -43,11 +53,6 @@ const ReservationQueryResults = (props) => {
 
         console.log("camas reservadas", reservedBeds);
 
-        // Obtengo las camas
-        let allBeds = await db.collection("beds").get();
-        allBeds = allBeds.docs.map((doc) => {
-          return { ...doc.data(), id: doc.id };
-        });
         // Filtro las camas que no tienen reserva entre esas fechas
         let availableBeds;
         availableBeds = allBeds.filter((bed) => {
@@ -60,17 +65,11 @@ const ReservationQueryResults = (props) => {
           return bed.roomId;
         });
 
-        // Obtengo las habitaciones de las camas disponibles
-        let availableRooms = await db
-          .collection("rooms")
-          .where(
-            firebase.firestore.FieldPath.documentId(),
-            "in",
-            availableRoomsIds
-          )
-          .get();
-        availableRooms = availableRooms.docs.map((doc) => {
-          return { ...doc.data(), id: doc.id };
+        // Filtro las habitaciones de las camas disponibles
+        const availableRooms = allRooms.filter((room) => {
+          return availableRoomsIds.some((id) => {
+            return room.id === id;
+          });
         });
 
         // Cargo los resultados en el state:
