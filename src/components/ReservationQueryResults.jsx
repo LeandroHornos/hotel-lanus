@@ -19,6 +19,16 @@ const ReservationQueryResults = (props) => {
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const removeRepeatedObjects = (objArray) => {
+    const seen = new Set();
+    const filteredArray = objArray.filter((obj) => {
+      const duplicate = seen.has(obj.id);
+      seen.add(obj.id);
+      return !duplicate;
+    });
+    return filteredArray;
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       const { dateIn, dateOut } = props.currentQuery;
@@ -35,14 +45,33 @@ const ReservationQueryResults = (props) => {
           return { ...doc.data(), id: doc.id };
         });
         // Obtengo las reservas existentes dentro de las fechas buscadas
-        let reservations = await db
+
+        // Reservas que terminan dentro del periodo indicado
+        let resBefore = await db
           .collection("reservations")
-          .where("dateIn", ">=", dateIn)
-          .where("dateIn", "<=", dateOut)
+          .where("dateOut", ">", dateIn)
+          .where("dateOut", "<=", dateOut)
           .get();
-        reservations = reservations.docs.map((doc) => {
+        resBefore = resBefore.docs.map((doc) => {
           return { ...doc.data(), id: doc.id };
         });
+
+        //Reservas que empiezan dentro del período indicado
+        let resAfter = await db
+          .collection("reservations")
+          .where("dateIn", ">=", dateIn)
+          .where("dateIn", "<", dateOut)
+          .get();
+        resAfter = resAfter.docs.map((doc) => {
+          return { ...doc.data(), id: doc.id };
+        });
+
+        // las reservas DENTRO del período están duplicadas pues cumplen ambas condiciones
+        let reservations = [...resBefore, ...resAfter];
+
+        // Remuevo los duplicados
+        reservations = removeRepeatedObjects(reservations);
+
         console.log("reservas en esas fechas", reservations);
 
         // Obtengo las camas correspondientes a las reservas
