@@ -8,7 +8,7 @@ import { useHistory } from "react-router-dom";
 // Components
 import NavigationBar from "./NavigationBar";
 
-const ReservationQuery = (props) => {
+const AvailabilityQuery = (props) => {
   const history = useHistory();
 
   const [dateIn, setDateIn] = useState("");
@@ -86,4 +86,4 @@ const ReservationQuery = (props) => {
   );
 };
 
-export default ReservationQuery;
+export default AvailabilityQuery;

@@ -9,8 +9,9 @@ import AdminPanel from "./components/AdminPanel";
 import Dashboard from "./components/Dashboard";
 import Rooms from "./components/Rooms";
 import ReservationForm from "./components/ReservationForm";
-import ReservationQuery from "./components/ReservationQuery";
-import ReservationQueryResults from "./components/ReservationQueryResults";
+import AvailabilityQuery from "./components/AvailabilityQuery";
+import AvailabilityQueryResults from "./components/AvailabilityQueryResults";
+import ReservationsViewer from "./components/ReservationsViewer";
 
 function App() {
   const [currentQuery, setCurrentQuery] = useState({});
@@ -26,14 +27,17 @@ function App() {
         <Route exact path="/adminpanel">
           <AdminPanel />
         </Route>
+        <Route exact path="/reservations">
+          <ReservationsViewer />
+        </Route>
         <Route exact path="/reserve">
           <ReservationForm />
         </Route>
         <Route exact path="/reservationquery">
-          <ReservationQuery setCurrentQuery={setCurrentQuery} />
+          <AvailabilityQuery setCurrentQuery={setCurrentQuery} />
         </Route>
         <Route exact path="/reservation-query-results">
-          <ReservationQueryResults currentQuery={currentQuery} />
+          <AvailabilityQueryResults currentQuery={currentQuery} />
         </Route>
       </Switch>
     </Router>
