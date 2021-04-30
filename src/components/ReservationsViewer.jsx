@@ -43,7 +43,24 @@ const ReservationsViewer = () => {
 };
 
 const ReservationsTable = (props) => {
-  const { reservations } = props;
+  const timestampToDate = (timestamp) => {
+    const fullDate = new Date(timestamp);
+    const day = fullDate.getDay();
+    const month = fullDate.getMonth() + 1;
+    const year = fullDate.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
+
+  let { reservations } = props;
+
+  reservations = reservations.map((res) => {
+    return {
+      ...res,
+      dateIn: timestampToDate(res.dateIn),
+      dateOut: timestampToDate(res.dateOut),
+    };
+  });
+
   return (
     <React.Fragment>
       <Table striped bordered hover size="sm" className="reservations-table">
