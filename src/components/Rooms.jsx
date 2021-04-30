@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 
-import firebaseApp from "../firebaseApp";
+
 
 // React Bootstrap
 import Card from "react-bootstrap/Card";
