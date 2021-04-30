@@ -11,7 +11,7 @@ import Card from "react-bootstrap/Card";
 //Components
 import NavigationBar from "./NavigationBar";
 
-const ReservationQueryResults = (props) => {
+const AvailabilityQueryResults = (props) => {
   //Firebase
   const db = firebaseApp.firestore();
   // State
@@ -177,7 +177,6 @@ const ResultsViewer = (props) => {
             </Card.Header>
             <Card.Body>
               <Card.Text>
-                {" "}
                 <span className="room-query-item-title">Descripción: </span>
                 {room.shortDescription}
               </Card.Text>
@@ -220,4 +219,4 @@ const ResultsViewer = (props) => {
   );
 };
 
-export default ReservationQueryResults;
+export default AvailabilityQueryResults;

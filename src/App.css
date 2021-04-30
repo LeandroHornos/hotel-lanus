@@ -69,3 +69,7 @@ ul {
   padding: 0;
   margin-right: 10px;
 }
+
+.reservations-table {
+  font-size: 0.8em;
+}
