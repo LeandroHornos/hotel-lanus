@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext } from "react";
 
 import firebaseApp from "../firebaseApp";
 
@@ -11,29 +11,10 @@ import NavigationBar from "./NavigationBar";
 
 import { groupAsTriplets, makeId } from "../utilities";
 
+import { HostelDataContext } from "../HostelData";
+
 const Rooms = () => {
-  const db = firebaseApp.firestore();
-  const ref = db.collection("rooms");
-  const [loading, setLoading] = useState(true);
-  const [groupedRooms, setGroupedRooms] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const results = await ref.get();
-      const rooms = results.docs.map((doc) => {
-        return { ...doc.data(), id: doc.id };
-      });
-      console.log("Rooms:", rooms);
-      const triplets = groupAsTriplets(rooms);
-      console.log("grouped rooms:", triplets);
-      setGroupedRooms(triplets);
-      setLoading(false);
-      return;
-    };
-
-    fetchData();
-    // eslint-disable-next-line
-  }, []);
+  const state = useContext(HostelDataContext);
 
   return (
     <React.Fragment>
@@ -42,7 +23,7 @@ const Rooms = () => {
         <div className="col-md-12">
           <h1 className="text-center">Habitaciones</h1>
         </div>
-        {loading ? (
+        {state.loading ? (
           <div className="row">
             <div className="col-12">
               <div className="d-flex justify-content-center align-items-center">
@@ -63,7 +44,7 @@ const Rooms = () => {
           <div className="row">
             <div className="col-md-1"></div>
             <div className="col-md-10">
-              <RoomsCardDeck groupedRooms={groupedRooms} />
+              <RoomsCardDeck groupedRooms={groupAsTriplets(state.data.rooms)} />
             </div>
             <div className="col-md-1"></div>
           </div>
