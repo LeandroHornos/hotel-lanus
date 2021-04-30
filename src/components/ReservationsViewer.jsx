@@ -26,6 +26,25 @@ export const getObjectById = (objId, objArray) => {
   return obj;
 };
 
+export const countBedsByType = (bedsArray, type) => {
+  let count = 0;
+  console.log("bedsInfo", bedsArray);
+  bedsArray.forEach((bed) => {
+    if (bed.type === type) {
+      count = count + 1;
+    }
+  });
+  return count;
+};
+
+export const listBeds = (bedsArray) => {
+  let bedIdsString = "";
+  bedsArray.forEach((bed) => {
+    bedIdsString = bedIdsString + bed.customId + "; ";
+  });
+  return bedIdsString;
+};
+
 const ReservationsViewer = () => {
   const state = useContext(HostelDataContext);
   const db = firebaseApp.firestore();
@@ -49,7 +68,7 @@ const ReservationsViewer = () => {
       <NavigationBar />
       <div className="row">
         <div className="col-md-1"></div>
-        <div className="col-md-10">
+        <div className="col-md-10" style={{ overflowX: "auto" }}>
           <h1 className="text-center">Reservas</h1>
           {state.loading || loading ? (
             "Cargando..."
@@ -92,6 +111,7 @@ const ReservationsTable = (props) => {
             <th>Habitacion</th>
             <th>Tipo Hab.</th>
             <th>Género Hab.</th>
+            <th>N° de camas</th>
             <th>Camas reservadas</th>
             <th>Entrada</th>
             <th>Salida</th>
@@ -107,7 +127,14 @@ const ReservationsTable = (props) => {
                 <td>{res.roomInfo.name}</td>
                 <td>{res.roomInfo.roomType}</td>
                 <td>{res.roomInfo.gender}</td>
-                <td>{res.beds.length}</td>
+                <td>{`Individual: ${countBedsByType(
+                  res.bedsInfo,
+                  "single"
+                )} / ${res.roomInfo.singleBeds} Doble: ${countBedsByType(
+                  res.bedsInfo,
+                  "double"
+                )} / ${res.roomInfo.doubleBeds}`}</td>
+                <td>{listBeds(res.bedsInfo)}</td>
                 <td>{res.dateIn}</td>
                 <td>{res.dateOut}</td>
                 <td>{res.payed ? "Si" : "No"}</td>

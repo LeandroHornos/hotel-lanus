@@ -30,8 +30,9 @@ export const HostelDataProvider = ({ children }) => {
         });
         let beds = await db.collection("beds").get();
         beds = beds.docs.map((doc) => {
-          return { ...doc, id: doc.id };
+          return { ...doc.data(), id: doc.id };
         });
+        console.log("use context obtuvo estas beds:", beds);
         dispatch({ type: "FETCH_SUCCESS", payload: { rooms, beds } });
       } catch (error) {
         dispatch({ type: "FETCH_ERROR", payload: error });
