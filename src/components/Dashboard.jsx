@@ -1,15 +1,28 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import { useHistory } from "react-router-dom";
 
 import NavigationBar from "./NavigationBar";
 import Button from "react-bootstrap/Button";
 
+import { HostelDataContext } from "../HostelData";
+
 const Dashboard = () => {
-  const history = useHistory();
+  const state = useContext(HostelDataContext);
   return (
     <React.Fragment>
       <NavigationBar />
+      {state.loading ? "cargando..." : <DashboardView state={state} />}
+    </React.Fragment>
+  );
+};
+
+const DashboardView = (props) => {
+  const history = useHistory();
+  const { rooms, beds } = props.state.data;
+  return (
+    <React.Fragment>
+      {" "}
       <div className="row">
         <div className="col-md-3"></div>
         <div className="col-md-6">
@@ -35,6 +48,8 @@ const Dashboard = () => {
           </div>
         </div>
         <div className="col-md-3"></div>
+      </div>
+      <div className="row">
       </div>
     </React.Fragment>
   );
