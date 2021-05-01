@@ -114,6 +114,7 @@ ul {
 .landing-page-phrase {
   font-style: italic;
   font-size: 1.3em;
+  text-align: center;
 }
 .landing-page-experience-comment {
   padding: 20px;
