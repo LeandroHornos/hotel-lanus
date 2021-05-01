@@ -12,6 +12,7 @@ import ReservationForm from "./components/ReservationForm";
 import AvailabilityQuery from "./components/AvailabilityQuery";
 import AvailabilityQueryResults from "./components/AvailabilityQueryResults";
 import ReservationsViewer from "./components/ReservationsViewer";
+import LandingPage from "./components/LandingPage";
 
 import { HostelDataProvider } from "./HostelData";
 
@@ -22,6 +23,9 @@ function App() {
       <Router>
         <Switch>
           <Route exact path="/">
+            <LandingPage />
+          </Route>
+          <Route exact path="/home">
             <Dashboard />
           </Route>
           <Route exact path="/rooms">
@@ -30,10 +34,10 @@ function App() {
           <Route exact path="/adminpanel">
             <AdminPanel />
           </Route>
-          <Route exact path="/reservations">
+          <Route exact path="/adminpanel/reservations">
             <ReservationsViewer />
           </Route>
-          <Route exact path="/reserve">
+          <Route exact path="/adminpanel/reserve">
             <ReservationForm />
           </Route>
           <Route exact path="/reservationquery">

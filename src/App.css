@@ -1,7 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400&display=swap');
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 'Nunito', sans-serif;
 }
 
 h1 {
@@ -74,3 +77,21 @@ ul {
   font-size: 0.8em;
 }
 
+.landing-page-container {
+  background-color: red;
+  background-image: url("./images/landing-page-background.jpg");
+  height: 100vh;
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.landing-page-welcolme-block {
+  padding: 40px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border-radius: 10px;
+  z-index: 10;
+  margin-top: 40px;
+}
