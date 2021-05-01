@@ -26,9 +26,6 @@ function App() {
             <LandingPage />
           </Route>
           <Route exact path="/home">
-            <Dashboard />
-          </Route>
-          <Route exact path="/rooms">
             <Rooms />
           </Route>
           <Route exact path="/adminpanel">

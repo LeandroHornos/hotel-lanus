@@ -1,14 +1,14 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400&display=swap");
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Nunito', sans-serif;
+  font-family: "Nunito", sans-serif;
 }
 
 h1 {
-  padding: 30px 10px;
+  padding: 20px 10px;
 }
 
 h2 {
@@ -54,6 +54,15 @@ ul {
   box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.3);
 }
 
+.room-card-img {
+  min-height: 250px;
+  background-color: rgb(100, 100, 100);
+  background-image: url("./images/picture-placeholder.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 .room-query-card {
   margin-bottom: 20px;
   box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.3);
@@ -78,8 +87,7 @@ ul {
 }
 
 .landing-page-container {
-  background-color: red;
-  background-image: url("./images/landing-page-background.jpg");
+  background-image: url("./images/landing2.jpg");
   height: 100vh;
   /* Center and scale the image nicely */
   background-position: center;
@@ -88,10 +96,35 @@ ul {
 }
 
 .landing-page-welcolme-block {
+  width: 100%;
   padding: 40px;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.6);
   color: white;
   border-radius: 10px;
   z-index: 10;
-  margin-top: 40px;
+}
+
+.landing-page-phrase {
+  font-style: italic;
+  font-size: 1.3em;
+}
+.landing-page-experience-comment {
+  padding: 20px;
+  font-style: italic;
+  font-size: 1em;
+  color: rgb(226, 201, 147);
+  text-align: center;
+}
+
+.landing-page-btn {
+  padding: 10px 80px;
+  background-color: rgb(29, 47, 58);
+  border-style: none;
+  width: 100%;
+  color: white;
+  border-radius: 3px;
+}
+
+.landing-page-btn:hover {
+  background-color: rgb(21, 56, 78);
 }

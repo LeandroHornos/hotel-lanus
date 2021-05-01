@@ -12,8 +12,7 @@ const NavigationBar = () => {
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse id="responsive-navbar-nav">
         <Nav className="mr-auto">
-          <Nav.Link href="/">Home</Nav.Link>
-          <Nav.Link href="/rooms">Rooms</Nav.Link>
+          <Nav.Link href="/home">Home</Nav.Link>
           <Nav.Link href="/adminpanel">Admin</Nav.Link>
           <Nav.Link href="/adminpanel/reserve">Reservar</Nav.Link>
           <Nav.Link href="/adminpanel/reservations">Ver Reservas</Nav.Link>

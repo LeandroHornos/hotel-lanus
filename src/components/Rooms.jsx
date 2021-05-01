@@ -1,7 +1,5 @@
 import React, { useContext } from "react";
 
-
-
 // React Bootstrap
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
@@ -68,11 +66,17 @@ const RoomsCardDeck = (props) => {
                   style={{ padding: "10px" }}
                 >
                   <Card style={{ height: "100%" }} className="room-card">
-                    <Card.Img variant="top" src={room.mainImgUrl} />
-                    <Card.Body>
-                      <Card.Title>{room.name}</Card.Title>
-                      <Card.Text>{room.shortDescription}</Card.Text>
-                      <Button variant="primary">Ver</Button>
+                    <Card.Img
+                      variant="top"
+                      src={room.mainImgUrl}
+                      className="room-card-img"
+                    />
+                    <Card.Body className="d-flex flex-column justify-content-between align-items-left">
+                      <div>
+                        <Card.Title className="room-card-title">{room.name}</Card.Title>
+                        <Card.Text>{room.shortDescription}</Card.Text>
+                      </div>
+                      <Button variant="outline-primary">Ver</Button>
                     </Card.Body>
                   </Card>
                 </div>

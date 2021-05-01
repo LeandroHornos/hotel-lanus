@@ -26,8 +26,10 @@ const DashboardView = (props) => {
       <div className="row">
         <div className="col-md-3"></div>
         <div className="col-md-6">
-          <h1 className="text-center">Hotel Lanus</h1>
-          <h2 className="text-center">Tu hostel amigo</h2>
+          <h1 className="text-center">Hostel Lanus</h1>
+          <h2 className="text-center">
+            Un lugar para desconectar de la rutina
+          </h2>
           <div>
             <Button
               block
@@ -49,8 +51,7 @@ const DashboardView = (props) => {
         </div>
         <div className="col-md-3"></div>
       </div>
-      <div className="row">
-      </div>
+      <div className="row"></div>
     </React.Fragment>
   );
 };
