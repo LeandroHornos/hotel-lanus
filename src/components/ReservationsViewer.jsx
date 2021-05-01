@@ -10,7 +10,7 @@ import NavigationBar from "./NavigationBar";
 
 export const timestampToDate = (timestamp) => {
   const fullDate = new Date(timestamp);
-  const day = fullDate.getDay();
+  const day = fullDate.getDate();
   const month = fullDate.getMonth() + 1;
   const year = fullDate.getFullYear();
   return `${day}/${month}/${year}`;
