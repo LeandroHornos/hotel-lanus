@@ -15,7 +15,7 @@ const LandingPage = () => {
               style={{ minHeight: "100vh" }}
             >
               <div className="d-flex flex-column align-items-center justify-content-center landing-page-welcolme-block">
-                <h1 className="text-center ">Hostel Lanus</h1>
+                <h1 className="text-center landing-page-title">Hostel Lanus</h1>
                 <p className="landing-page-phrase">
                   Un lugar para desconectar de la rutina
                 </p>

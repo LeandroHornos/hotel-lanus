@@ -1,11 +1,14 @@
 import React, { useContext } from "react";
 
+import { useHistory } from "react-router-dom";
+
 // React Bootstrap
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";
 
 import NavigationBar from "./NavigationBar";
+import Footer from "./Footer";
 
 import { groupAsTriplets, makeId } from "../utilities";
 
@@ -17,7 +20,7 @@ const Rooms = () => {
   return (
     <React.Fragment>
       <NavigationBar />
-      <div className="row">
+      <div className="row" style={{ minHeight: "100vh" }}>
         <div className="col-md-12">
           <h1 className="text-center">Habitaciones</h1>
         </div>
@@ -40,19 +43,21 @@ const Rooms = () => {
           </div>
         ) : (
           <div className="row">
-            <div className="col-md-1"></div>
-            <div className="col-md-10">
+            <div className="col-lg-1"></div>
+            <div className="col-lg-10 col-md-12">
               <RoomsCardDeck groupedRooms={groupAsTriplets(state.data.rooms)} />
             </div>
-            <div className="col-md-1"></div>
+            <div className="col-lg-1"></div>
           </div>
         )}
       </div>
+      <Footer />
     </React.Fragment>
   );
 };
 
 const RoomsCardDeck = (props) => {
+  const history = useHistory();
   return (
     <React.Fragment>
       {props.groupedRooms.map((group) => {
@@ -73,10 +78,19 @@ const RoomsCardDeck = (props) => {
                     />
                     <Card.Body className="d-flex flex-column justify-content-between align-items-left">
                       <div>
-                        <Card.Title className="room-card-title">{room.name}</Card.Title>
+                        <Card.Title className="room-card-title">
+                          {room.name}
+                        </Card.Title>
                         <Card.Text>{room.shortDescription}</Card.Text>
                       </div>
-                      <Button variant="outline-primary">Ver</Button>
+                      <Button
+                        variant="outline-primary"
+                        onClick={() => {
+                          history.push(`/room/${room.id}`);
+                        }}
+                      >
+                        Ver
+                      </Button>
                     </Card.Body>
                   </Card>
                 </div>

@@ -6,13 +6,13 @@ import React, { useState, useContext } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 // Components
 import AdminPanel from "./components/AdminPanel";
-import Dashboard from "./components/Dashboard";
-import Rooms from "./components/Rooms";
-import ReservationForm from "./components/ReservationForm";
 import AvailabilityQuery from "./components/AvailabilityQuery";
 import AvailabilityQueryResults from "./components/AvailabilityQueryResults";
-import ReservationsViewer from "./components/ReservationsViewer";
 import LandingPage from "./components/LandingPage";
+import ReservationForm from "./components/ReservationForm";
+import ReservationsViewer from "./components/ReservationsViewer";
+import Room from "./components/Room";
+import Rooms from "./components/Rooms";
 
 import { HostelDataProvider } from "./HostelData";
 
@@ -27,6 +27,9 @@ function App() {
           </Route>
           <Route exact path="/home">
             <Rooms />
+          </Route>
+          <Route exact path="/room/:id">
+            <Room />
           </Route>
           <Route exact path="/adminpanel">
             <AdminPanel />
